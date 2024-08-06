@@ -1,4 +1,6 @@
-# thesis
+# Master's thesis
+
+This project is about using deep reinforcement learning for robotic decision-making.
 
 #1. required libraries:
 gymnasium,
