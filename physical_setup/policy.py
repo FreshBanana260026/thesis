@@ -27,9 +27,7 @@ class Policy(CategoricalMixin, Model):
         self.hl5 = nn.Linear(self.hidden_size, self.hidden_size)
         self.hl6 = nn.Linear(self.hidden_size, self.hidden_size)
         self.hl7 = nn.Linear(self.hidden_size, self.hidden_size)
-        # self.hl8 = nn.Linear(self.hidden_size, self.hidden_size)
-        # self.hl9 = nn.Linear(self.hidden_size, self.hidden_size)
-        self.hl10 = nn.Linear(self.hidden_size, self.hidden_size)
+        self.hl8 = nn.Linear(self.hidden_size, self.hidden_size)
         self.logits = nn.Linear(self.hidden_size, self.num_actions)
 
         self.dropout1 = nn.Dropout(p=self.drop_rate)
@@ -40,17 +38,11 @@ class Policy(CategoricalMixin, Model):
         self.dropout5 = nn.Dropout(p=self.drop_rate)
         self.dropout6 = nn.Dropout(p=self.drop_rate)
         self.dropout7 = nn.Dropout(p=self.drop_rate)
-        # self.dropout8 = nn.Dropout(p=self.drop_rate)
-        # self.dropout9 = nn.Dropout(p=self.drop_rate)
 
     def compute(self, inputs, role):
         if type(inputs) is dict:
             inputs = inputs["states"]
-
-        # height_map = inputs[:, 333:]
-        # box = inputs[:, :3]
-        # box_rep = box.repeat(1, 100)
-        # input = torch.cat((height_map, box_rep), 1)
+            
         height_map = inputs[:, 333:].view(inputs.shape[0], 1, 40, 40)
         box = inputs[:, :3].unsqueeze(2).unsqueeze(3)
         box = box.repeat(1, 1, 40, 40)
@@ -87,13 +79,7 @@ class Policy(CategoricalMixin, Model):
         x = self.hl7(x)
         x = F.relu(x)
         x = self.dropout7(x)
-        # x = self.hl8(x)
-        # x = F.relu(x)
-        # x = self.dropout8(x)
-        # x = self.hl9(x)
-        # x = F.relu(x)
-        # x = self.dropout9(x)
-        x = self.hl10(x)
+        x = self.hl8(x)
         x = F.relu(x)
 
         x = self.logits(x)
